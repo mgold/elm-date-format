@@ -1,6 +1,7 @@
+
 import FormatString (formatDate)
 import Date
 
-aDate = 1405480764 * second |> Date.fromTime
+now = Date.fromTime <~ every second
 
-main = asText <| formatDate "%d %B, %Y %%d" aDate
+main = asText <~ lift (formatDate "%a, %d %B, %Y  %I:%M:%S %p") now
