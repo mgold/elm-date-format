@@ -1,5 +1,5 @@
 module FormatString (formatDate) where
-{-|Format dates with ease
+{-|Format strings for dates.
 
 @docs formatDate
 -}
