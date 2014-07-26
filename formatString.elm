@@ -1,4 +1,7 @@
 module FormatString (formatDate) where
+{-|Format dates with ease
+-}
+
 import Date
 import Regex
 import String (padLeft, show)
@@ -6,6 +9,10 @@ import String (padLeft, show)
 re : Regex.Regex
 re = Regex.regex "(^|[^%])%(Y|m|B|b|d|e|a|A|H|k|I|l|p|P|M|S)"
 
+{-| Use a format string to format a date. See the
+[README](https://github.com/mgold/Elm-Format-String/blob/master/README.md) for a
+list of accepted formatters.
+-}
 formatDate : String -> Date.Date -> String
 formatDate s d = Regex.replace Regex.All re (formatToken d) s
 
@@ -19,18 +26,18 @@ formatToken d m = let
             "m" -> d |> Date.month |> monthToInt |> show |> padLeft 2 '0'
             "B" -> d |> Date.month |> monthToFullName
             "b" -> d |> Date.month |> show
-            "d" -> d |> Date.day |> show |> padLeft 2 '0'
-            "e" -> d |> Date.day |> show |> padLeft 2 ' '
+            "d" -> d |> Date.day |> padWith '0'
+            "e" -> d |> Date.day |> padWith ' '
             "a" -> d |> Date.dayOfWeek |> show
             "A" -> d |> Date.dayOfWeek |> fullDayOfWeek
-            "H" -> d |> Date.hour |> show |> padLeft 2 '0'
-            "k" -> d |> Date.hour |> show |> padLeft 2 ' '
-            "I" -> d |> Date.hour |> mod12 |> show |> padLeft 2 '0'
-            "l" -> d |> Date.hour |> mod12 |> show |> padLeft 2 ' '
+            "H" -> d |> Date.hour |> padWith '0'
+            "k" -> d |> Date.hour |> padWith ' '
+            "I" -> d |> Date.hour |> mod12 |> padWith '0'
+            "l" -> d |> Date.hour |> mod12 |> padWith ' '
             "p" -> if Date.hour d < 13 then "AM" else "PM"
             "P" -> if Date.hour d < 13 then "am" else "pm"
-            "M" -> d |> Date.minute |> show |> padLeft 2 '0'
-            "S" -> d |> Date.second |> show |> padLeft 2 '0'
+            "M" -> d |> Date.minute |> padWith '0'
+            "S" -> d |> Date.second |> padWith '0'
             _ -> ""
 
 
@@ -72,3 +79,6 @@ fullDayOfWeek dow = case dow of
     Date.Sun -> "Sunday"
 
 mod12 h = h `mod` 12
+
+padWith : Char -> a -> String
+padWith c = padLeft 2 c . show

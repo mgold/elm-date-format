@@ -1,0 +1,9 @@
+{ "version": "0.1"
+, "summary": "Format String"
+, "description": "Format dates with ease"
+, "license": "BSD3"
+, "repository": "https://github.com/mgold/Elm-Format-String.git"
+, "exposed-modules": [ "FormatString" ]
+, "elm-version": "0.12.3"
+, "dependencies": {}
+}
