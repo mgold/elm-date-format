@@ -1,5 +1,7 @@
 module FormatString (formatDate) where
 {-|Format dates with ease
+
+@docs formatDate
 -}
 
 import Date

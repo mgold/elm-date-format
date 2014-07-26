@@ -1,6 +1,6 @@
 Format String for Elm
 =====================
-**by Max Goldstein | Version 0.1.1**
+**by Max Goldstein | Version 0.1.2**
 
 Create format strings for dates in the Elm programming language.
 
