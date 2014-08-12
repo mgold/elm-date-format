@@ -60,4 +60,4 @@ testResult : [String]
 testResult = zipWith (verify) formattedDates expectedDates
 
 
-main = flow down <| map asText (zipWith (\x y -> x ++ " (" ++ y ++ ")") testResult datePatterns)
+main = flow down <| map asText <| zipWith (\x y -> x ++ " (" ++ y ++ ")") testResult datePatterns
