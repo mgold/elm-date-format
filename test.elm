@@ -25,7 +25,7 @@ formatSampleDate fstring = formatDate fstring sampleDate
 formatTest : TestTriple -> TestTriple
 formatTest (a, b, format) = (a, b, formatSampleDate format)
 
-makeTest : (String, String, String) -> Test
+makeTest : TestTriple -> Test
 makeTest (described, expected, actual) = test described <| assertEqual expected actual
 
 tests : Test
