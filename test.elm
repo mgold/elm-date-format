@@ -2,62 +2,34 @@
 on that!
 -}
 
-import FormatString (formatDate)
 import Date
+import FormatString (formatDate)
+import ElmTest.Test (test, Test, suite)
+import ElmTest.Assertion (assertEqual)
+import ElmTest.Runner.Element (runDisplay)
 
--- Date patterns taken from
--- http://msdn.microsoft.com/en-us/library/az4se3k1%28v=vs.110%29.aspx
+type TestTriple = (String, String, String)
 
-shortDate = "%d/%m/%Y"
-longDate  = "%A, %B %d, %Y"
-
-shortTime = "%I:%M %p"
-longTime  = "%I:%M:%S %p"
-
-shortDateTime = shortDate ++ " " ++ shortTime
-longDateTime  = longDate  ++ " " ++ longTime
-
-datePatterns = [ shortDate
-               , longDate
-               , shortTime
-               , longTime
-               , shortDateTime
-               , longDateTime ]
-
+testData : [TestTriple]
+testData = [ ("numeric date", "12/08/2014","%d/%m/%Y")
+           , ("spelled out date", "Tuesday, August 12, 2014","%A, %B %d, %Y")
+           , ("time", "10:53:51 AM","%I:%M:%S %p")
+           ]
 
 sampleDate : Date.Date
 sampleDate = Date.fromTime 1407833631116.0
 
-shortDateExpected = "12/08/2014"
-longDateExpected = "Tuesday, August 12, 2014"
-shortTimeExpected = "10:53 AM"
-longTimeExpected = "10:53:51 AM"
-shortDateTimeExpected = "12/08/2014 10:53 AM"
-longDateTimeExpected = "Tuesday, August 12, 2014 10:53:51 AM"
+formatSampleDate : String -> String
+formatSampleDate fstring = formatDate fstring sampleDate
 
-expectedDates = [ shortDateExpected
-                , longDateExpected
-                , shortTimeExpected
-                , longTimeExpected
-                , shortDateTimeExpected
-                , longDateTimeExpected ]
+formatTest : TestTriple -> TestTriple
+formatTest (a, b, format) = (a, b, formatSampleDate format)
 
-formatDateReversed : String -> String
-formatDateReversed = flip formatDate sampleDate
+makeTest : (String, String, String) -> Test
+makeTest (described, expected, actual) = test described <| assertEqual expected actual
 
-formattedDates : [String]
-formattedDates = map formatDateReversed datePatterns
+tests : Test
+tests = suite "Formatting" <| map (makeTest . formatTest) testData
 
-dates : [Element]
-dates =  map asText <| map formatDateReversed datePatterns
-
-verify : String -> String -> String
-verify actual expected = case actual == expected of
-                           True -> "OK: " ++ actual
-                           _    -> "NOK actual:  [" ++  actual ++ "] expected [" ++  expected ++ "]"
-                         
-testResult : [String]
-testResult = zipWith (verify) formattedDates expectedDates
-
-
-main = flow down <| map asText <| zipWith (\x y -> x ++ " (" ++ y ++ ")") testResult datePatterns
+main : Element
+main = runDisplay tests
