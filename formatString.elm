@@ -6,7 +6,9 @@ module FormatString (formatDate) where
 
 import Date
 import Regex
-import String (padLeft, show)
+import String (padLeft)
+import Maybe
+import List (head, tail)
 
 re : Regex.Regex
 re = Regex.regex "(^|[^%])%(Y|m|B|b|d|e|a|A|H|k|I|l|p|P|M|S)"
@@ -20,17 +22,17 @@ formatDate s d = Regex.replace Regex.All re (formatToken d) s
 
 formatToken : Date.Date -> Regex.Match -> String
 formatToken d m = let
-    prefix = maybe " " id <| head m.submatches
+    prefix = Maybe.withDefault " " (head m.submatches)
     symbol : String
-    symbol = maybe " " id <| (head . tail) m.submatches
+    symbol = Maybe.withDefault " " <| (tail>>head) m.submatches
         in prefix ++ case symbol of
-            "Y" -> d |> Date.year |> show
-            "m" -> d |> Date.month |> monthToInt |> show |> padLeft 2 '0'
+            "Y" -> d |> Date.year |> toString
+            "m" -> d |> Date.month |> monthToInt |> toString |> padLeft 2 '0'
             "B" -> d |> Date.month |> monthToFullName
-            "b" -> d |> Date.month |> show
+            "b" -> d |> Date.month |> toString
             "d" -> d |> Date.day |> padWith '0'
             "e" -> d |> Date.day |> padWith ' '
-            "a" -> d |> Date.dayOfWeek |> show
+            "a" -> d |> Date.dayOfWeek |> toString
             "A" -> d |> Date.dayOfWeek |> fullDayOfWeek
             "H" -> d |> Date.hour |> padWith '0'
             "k" -> d |> Date.hour |> padWith ' '
@@ -80,7 +82,7 @@ fullDayOfWeek dow = case dow of
     Date.Sat -> "Saturday"
     Date.Sun -> "Sunday"
 
-mod12 h = h `mod` 12
+mod12 h = h % 12
 
 padWith : Char -> a -> String
-padWith c = padLeft 2 c . show
+padWith c = padLeft 2 c << toString
