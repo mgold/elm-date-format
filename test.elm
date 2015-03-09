@@ -1,14 +1,15 @@
-{- A simple test an example of the library. Does not test every option, working
-on that!
+{- A simple test an example of the library.
+   Does not test every option, you can submit PRs for that.
 -}
 
 import Date
 import List (map)
-import FormatString (formatDate)
+import Date.Format
 import ElmTest.Test (test, Test, suite)
 import ElmTest.Assertion (assertEqual)
 import ElmTest.Runner.Element (runDisplay)
 
+-- test name, expected value, format string
 type alias TestTriple = (String, String, String)
 
 testData : List TestTriple
@@ -21,7 +22,7 @@ sampleDate : Date.Date
 sampleDate = Date.fromTime 1407833631116.0
 
 formatSampleDate : String -> String
-formatSampleDate fstring = formatDate fstring sampleDate
+formatSampleDate fstring = Date.Format.format fstring sampleDate
 
 formatTest : TestTriple -> TestTriple
 formatTest (a, b, format) = (a, b, formatSampleDate format)

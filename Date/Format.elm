@@ -1,4 +1,4 @@
-module FormatString (formatDate) where
+module Date.Format (format) where
 {-|Format strings for dates.
 
 @docs formatDate
@@ -17,8 +17,8 @@ re = Regex.regex "(^|[^%])%(Y|m|B|b|d|e|a|A|H|k|I|l|p|P|M|S)"
 [README](https://github.com/mgold/Elm-Format-String/blob/master/README.md) for a
 list of accepted formatters.
 -}
-formatDate : String -> Date.Date -> String
-formatDate s d = Regex.replace Regex.All re (formatToken d) s
+format : String -> Date.Date -> String
+format s d = Regex.replace Regex.All re (formatToken d) s
 
 formatToken : Date.Date -> Regex.Match -> String
 formatToken d m = let

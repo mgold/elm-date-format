@@ -1,12 +1,12 @@
 {
     "version": "1.0.0",
     "summary": "Format dates with ease",
-    "repository": "https://github.com/mgold/Elm-Format-String.git",
+    "repository": "https://github.com/mgold/elm-date-format.git",
     "license": "BSD3",
     "source-directories": [
         "."
     ],
-    "exposed-modules": ["FormatString"],
+    "exposed-modules": ["Date.Format"],
     "dependencies": {
         "deadfoxygrandpa/Elm-Test": "1.0.2 <= v < 2.0.0",
         "elm-lang/core": "1.0.0 <= v < 2.0.0"
