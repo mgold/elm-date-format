@@ -1,7 +1,7 @@
 module Date.Format (format) where
 {-|Format strings for dates.
 
-@docs formatDate
+@docs format
 -}
 
 import Date
