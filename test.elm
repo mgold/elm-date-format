@@ -3,11 +3,11 @@
 -}
 
 import Date
-import List (map)
+import List exposing (map)
 import Date.Format
-import ElmTest.Test (test, Test, suite)
-import ElmTest.Assertion (assertEqual)
-import ElmTest.Runner.Element (runDisplay)
+import ElmTest.Test exposing (test, Test, suite)
+import ElmTest.Assertion exposing (assertEqual)
+import ElmTest.Runner.Element exposing (runDisplay)
 
 -- test name, expected value, format string
 type alias TestTriple = (String, String, String)

@@ -6,9 +6,9 @@ module Date.Format (format) where
 
 import Date
 import Regex
-import String (padLeft)
-import Maybe
-import List (head, tail)
+import String exposing (padLeft)
+import Maybe exposing (andThen, withDefault)
+import List exposing (head, tail)
 
 re : Regex.Regex
 re = Regex.regex "(^|[^%])%(Y|m|B|b|d|e|a|A|H|k|I|l|p|P|M|S)"
@@ -22,9 +22,8 @@ format s d = Regex.replace Regex.All re (formatToken d) s
 
 formatToken : Date.Date -> Regex.Match -> String
 formatToken d m = let
-    prefix = Maybe.withDefault " " (head m.submatches)
-    symbol : String
-    symbol = Maybe.withDefault " " <| (tail>>head) m.submatches
+    prefix = head m.submatches |> collapse |> Maybe.withDefault " "
+    symbol = tail m.submatches `andThen` head |> collapse |> Maybe.withDefault " "
         in prefix ++ case symbol of
             "Y" -> d |> Date.year |> toString
             "m" -> d |> Date.month |> monthToInt |> toString |> padLeft 2 '0'
@@ -44,6 +43,7 @@ formatToken d m = let
             "S" -> d |> Date.second |> padWith '0'
             _ -> ""
 
+collapse m = andThen m identity
 
 monthToInt m = case m of
     Date.Jan -> 1
