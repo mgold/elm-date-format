@@ -7,7 +7,7 @@ Create format strings for dates in the Elm programming language.
 Documentation
 -------------
 
-The module `FormatString` exports one function, `formatDate : String -> Date.Date -> String`.
+The module `Date.Format` exports one function, `format : String -> Date.Date -> String`.
 The `Date` refers to Elm's standard [Date library](http://library.elm-lang.org/catalog/elm-lang-Elm/latest/Date).
 The input `String` may contain any of the following substrings, which will be expanded to parts of the date.
 
@@ -40,4 +40,4 @@ massive case statement, you'll also need to add it to the regex. Languages like
 and [Ruby](http://apidock.com/ruby/DateTime/strftime) have very comprehensive
 format strings. (Luckily, they seem to agree on the encoding, which you should
 follow.) The goal here is different: address 90% of use cases with relative
-ease. So don't go adding formats just because they'e there.
+ease. So don't go adding formats just because they're there.
