@@ -5,9 +5,7 @@
 import Date
 import List exposing (map)
 import Date.Format
-import ElmTest.Test exposing (test, Test, suite)
-import ElmTest.Assertion exposing (assertEqual)
-import ElmTest.Runner.Element exposing (runDisplay)
+import ElmTest exposing (test, Test, suite, assertEqual, elementRunner)
 
 -- test name, expected value, format string
 type alias TestTriple = (String, String, String)
@@ -33,4 +31,4 @@ makeTest (described, expected, actual) = test described <| assertEqual expected 
 tests : Test
 tests = suite "Formatting" <| map (makeTest << formatTest) testData
 
-main = runDisplay tests
+main = elementRunner tests
