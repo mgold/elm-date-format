@@ -1,15 +1,15 @@
 {
-    "version": "1.0.2",
-    "summary": "Format dates with ease",
+    "version": "1.0.0",
+    "summary": "Tests for formatting dates with ease",
     "repository": "https://github.com/mgold/elm-date-format.git",
     "license": "BSD3",
     "source-directories": [
-        "src"
+        ".",
+        "../src"
     ],
-    "exposed-modules": [
-        "Date.Format"
-    ],
+    "exposed-modules": [],
     "dependencies": {
+        "deadfoxygrandpa/elm-test": "3.0.0 <= v < 4.0.0",
         "elm-lang/core": "3.0.0 <= v < 4.0.0"
     },
     "elm-version": "0.16.0 <= v < 0.17.0"
