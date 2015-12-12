@@ -14,7 +14,7 @@ re : Regex.Regex
 re = Regex.regex "(^|[^%])%(Y|m|B|b|d|e|a|A|H|k|I|l|p|P|M|S)"
 
 {-| Use a format string to format a date. See the
-[README](https://github.com/mgold/Elm-Format-String/blob/master/README.md) for a
+[README](https://github.com/mgold/elm-date-format/blob/master/README.md) for a
 list of accepted formatters.
 -}
 format : String -> Date.Date -> String
