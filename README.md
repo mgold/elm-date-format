@@ -8,7 +8,7 @@ Documentation
 -------------
 
 The module `Date.Format` exports one function, `format : String -> Date.Date -> String`.
-The `Date` refers to Elm's standard [Date library](http://library.elm-lang.org/catalog/elm-lang-Elm/latest/Date).
+The `Date` refers to Elm's standard [Date library](http://package.elm-lang.org/packages/elm-lang/core/3.0.0/Date).
 The input `String` may contain any of the following substrings, which will be expanded to parts of the date.
 
 * `%Y` - 4 digit year
