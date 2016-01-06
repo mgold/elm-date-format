@@ -7,7 +7,7 @@ Create format strings for dates in the Elm programming language.
 Documentation
 -------------
 
-The module `Date.Format` exports one function, `format : String -> Date.Date -> String`.
+The module `Date.Format` exports `format : String -> Date.Date -> String`.
 The `Date` refers to Elm's standard [Date library](http://package.elm-lang.org/packages/elm-lang/core/latest/Date).
 The input `String` may contain any of the following substrings, which will be expanded to parts of the date.
 
