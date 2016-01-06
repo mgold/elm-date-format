@@ -1,4 +1,4 @@
-module Date.Format (format) where
+module Date.Format (format, formatISO8601) where
 {-|Format strings for dates.
 
 @docs format
@@ -19,6 +19,11 @@ list of accepted formatters.
 -}
 format : String -> Date.Date -> String
 format s d = Regex.replace Regex.All re (formatToken d) s
+
+{-| Formats a UTC date acording to [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601). This is commonly used to send dates to a server. For example: `2016-01-06T09:22:00Z`.
+-}
+formatISO8601 : Date.Date -> String
+formatISO8601 = format "%Y-%m-%dT%H:%M:%SZ"
 
 formatToken : Date.Date -> Regex.Match -> String
 formatToken d m = let
