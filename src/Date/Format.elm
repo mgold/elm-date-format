@@ -42,7 +42,7 @@ formatToken d m = let
             "A" -> d |> Date.dayOfWeek |> fullDayOfWeek
             "H" -> d |> Date.hour |> padWith '0'
             "k" -> d |> Date.hour |> padWith ' '
-            "I" -> d |> Date.hour |> mod12 |> padWith '0'
+            "I" -> d |> Date.hour |> mod12 |> zero2twelve |> padWith '0'
             "l" -> d |> Date.hour |> mod12 |> padWith ' '
             "p" -> if Date.hour d < 13 then "AM" else "PM"
             "P" -> if Date.hour d < 13 then "am" else "pm"
@@ -90,6 +90,12 @@ fullDayOfWeek dow = case dow of
     Date.Sun -> "Sunday"
 
 mod12 h = h % 12
+
+zero2twelve n =
+  if n == 0 then
+    12
+  else
+    n
 
 padWith : Char -> a -> String
 padWith c = padLeft 2 c << toString
