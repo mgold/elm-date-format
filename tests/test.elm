@@ -13,7 +13,7 @@ type alias TestTriple = (String, String, String)
 testData : List TestTriple
 testData = [ ("numeric date", "12/08/2014","%d/%m/%Y")
            , ("spelled out date", "Tuesday, August 12, 2014","%A, %B %d, %Y")
-           , ("time", "04:53:51 AM","%I:%M:%S %p")
+           , ("time", "10:53:51 AM","%I:%M:%S %p")
            ]
 
 sampleDate : Date.Date
