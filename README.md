@@ -27,8 +27,7 @@ The input `String` may contain any of the following substrings, which will be ex
 * `%P` - am or pm
 * `%M` - Minute of the hour, zero-padded
 * `%S` - Second of the minute, zero-padded
-
-Note that `%%` is intended to produce a literal `%` but this is not supported yet.
+* `%%` - literal `%`
 
 Contributing
 ------------
@@ -39,5 +38,5 @@ massive case statement, you'll also need to add it to the regex. Languages like
 [Python](https://docs.python.org/2/library/datetime.html#strftime-strptime-behavior),
 and [Ruby](http://apidock.com/ruby/DateTime/strftime) have very comprehensive
 format strings. (Luckily, they seem to agree on the encoding, which you should
-follow.) The goal here is different: address 90% of use cases with relative
-ease. So don't go adding formats just because they're there.
+follow.) I've tried to add the most common formats, but if you want one added,
+send a PR (and add a passing test). To run the tests, `cd tests && elm package install --yes && elm reactor`.

@@ -1,12 +1,10 @@
+module Main (..) where
+
 {- A simple test an example of the library.
 Does not test every option, you can submit PRs for that.
 -}
 
-
-module Main (..) where
-
 import Date
-import List exposing (map)
 import Date.Format
 import ElmTest exposing (test, Test, suite, assertEqual, elementRunner)
 
@@ -23,6 +21,8 @@ testData =
   [ ( "numeric date", "12/08/2014", "%d/%m/%Y" )
   , ( "spelled out date", "Tuesday, August 12, 2014", "%A, %B %d, %Y" )
   , ( "time", "04:53:51 AM", "%I:%M:%S %p" )
+  , ( "time no spaces", "045351", "%H%M%S" )
+  , ( "literal %", "04%53", "%H%%%M" )
   ]
 
 
@@ -48,7 +48,7 @@ makeTest ( described, expected, actual ) =
 
 tests : Test
 tests =
-  suite "Formatting" <| map (makeTest << formatTest) testData
+  suite "Formatting" <| List.map (makeTest << formatTest) testData
 
 
 main =

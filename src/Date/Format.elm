@@ -14,7 +14,7 @@ import List exposing (head, tail)
 
 re : Regex.Regex
 re =
-  Regex.regex "(^|[^%])%(Y|m|B|b|d|e|a|A|H|k|I|l|p|P|M|S)"
+  Regex.regex "%(%|Y|m|B|b|d|e|a|A|H|k|I|l|p|P|M|S)"
 
 
 {-| Use a format string to format a date. See the
@@ -38,74 +38,74 @@ formatISO8601 =
 formatToken : Date.Date -> Regex.Match -> String
 formatToken d m =
   let
-    prefix =
-      head m.submatches |> collapse |> Maybe.withDefault " "
-
     symbol =
-      tail m.submatches `andThen` head |> collapse |> Maybe.withDefault " "
+      case m.submatches of
+        [ Just x ] ->
+          x
+
+        _ ->
+          " "
   in
-    prefix
-      ++ case symbol of
-          "Y" ->
-            d |> Date.year |> toString
+    case symbol of
+      "%" ->
+        "%"
 
-          "m" ->
-            d |> Date.month |> monthToInt |> toString |> padLeft 2 '0'
+      "Y" ->
+        d |> Date.year |> toString
 
-          "B" ->
-            d |> Date.month |> monthToFullName
+      "m" ->
+        d |> Date.month |> monthToInt |> toString |> padLeft 2 '0'
 
-          "b" ->
-            d |> Date.month |> toString
+      "B" ->
+        d |> Date.month |> monthToFullName
 
-          "d" ->
-            d |> Date.day |> padWith '0'
+      "b" ->
+        d |> Date.month |> toString
 
-          "e" ->
-            d |> Date.day |> padWith ' '
+      "d" ->
+        d |> Date.day |> padWith '0'
 
-          "a" ->
-            d |> Date.dayOfWeek |> toString
+      "e" ->
+        d |> Date.day |> padWith ' '
 
-          "A" ->
-            d |> Date.dayOfWeek |> fullDayOfWeek
+      "a" ->
+        d |> Date.dayOfWeek |> toString
 
-          "H" ->
-            d |> Date.hour |> padWith '0'
+      "A" ->
+        d |> Date.dayOfWeek |> fullDayOfWeek
 
-          "k" ->
-            d |> Date.hour |> padWith ' '
+      "H" ->
+        d |> Date.hour |> padWith '0'
 
-          "I" ->
-            d |> Date.hour |> mod12 |> zero2twelve |> padWith '0'
+      "k" ->
+        d |> Date.hour |> padWith ' '
 
-          "l" ->
-            d |> Date.hour |> mod12 |> zero2twelve |> padWith ' '
+      "I" ->
+        d |> Date.hour |> mod12 |> zero2twelve |> padWith '0'
 
-          "p" ->
-            if Date.hour d < 13 then
-              "AM"
-            else
-              "PM"
+      "l" ->
+        d |> Date.hour |> mod12 |> zero2twelve |> padWith ' '
 
-          "P" ->
-            if Date.hour d < 13 then
-              "am"
-            else
-              "pm"
+      "p" ->
+        if Date.hour d < 13 then
+          "AM"
+        else
+          "PM"
 
-          "M" ->
-            d |> Date.minute |> padWith '0'
+      "P" ->
+        if Date.hour d < 13 then
+          "am"
+        else
+          "pm"
 
-          "S" ->
-            d |> Date.second |> padWith '0'
+      "M" ->
+        d |> Date.minute |> padWith '0'
 
-          _ ->
-            ""
+      "S" ->
+        d |> Date.second |> padWith '0'
 
-
-collapse m =
-  andThen m identity
+      _ ->
+        ""
 
 
 monthToInt m =
