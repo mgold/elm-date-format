@@ -1,4 +1,4 @@
-module Date.Format (format, formatISO8601) where
+module Date.Format exposing (format, formatISO8601)
 
 {-| Format strings for dates.
 

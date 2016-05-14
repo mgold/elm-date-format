@@ -1,4 +1,4 @@
-module Main (..) where
+module Main exposing (..)
 
 {- A simple test an example of the library.
 Does not test every option, you can submit PRs for that.
@@ -6,7 +6,7 @@ Does not test every option, you can submit PRs for that.
 
 import Date
 import Date.Format
-import ElmTest exposing (test, Test, suite, assertEqual, elementRunner)
+import ElmTest exposing (test, Test, suite, assertEqual, runSuiteHtml)
 
 
 -- test name, expected value, format string
@@ -52,4 +52,4 @@ tests =
 
 
 main =
-  elementRunner tests
+  runSuiteHtml tests
