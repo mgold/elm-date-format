@@ -14,7 +14,7 @@ import List exposing (head, tail)
 
 re : Regex.Regex
 re =
-  Regex.regex "%(%|Y|m|B|b|d|e|a|A|H|k|I|l|p|P|M|S)"
+    Regex.regex "%(%|Y|m|B|b|d|e|a|A|H|k|I|l|p|P|M|S)"
 
 
 {-| Use a format string to format a date. See the
@@ -23,7 +23,7 @@ list of accepted formatters.
 -}
 format : String -> Date.Date -> String
 format s d =
-  Regex.replace Regex.All re (formatToken d) s
+    Regex.replace Regex.All re (formatToken d) s
 
 
 {-| Formats a UTC date acording to
@@ -32,195 +32,195 @@ send dates to a server. For example: `2016-01-06T09:22:00Z`.
 -}
 formatISO8601 : Date.Date -> String
 formatISO8601 =
-  format "%Y-%m-%dT%H:%M:%SZ"
+    format "%Y-%m-%dT%H:%M:%SZ"
 
 
 formatToken : Date.Date -> Regex.Match -> String
 formatToken d m =
-  let
-    symbol =
-      case m.submatches of
-        [ Just x ] ->
-          x
+    let
+        symbol =
+            case m.submatches of
+                [ Just x ] ->
+                    x
 
-        _ ->
-          " "
-  in
-    case symbol of
-      "%" ->
-        "%"
+                _ ->
+                    " "
+    in
+        case symbol of
+            "%" ->
+                "%"
 
-      "Y" ->
-        d |> Date.year |> toString
+            "Y" ->
+                d |> Date.year |> toString
 
-      "m" ->
-        d |> Date.month |> monthToInt |> toString |> padLeft 2 '0'
+            "m" ->
+                d |> Date.month |> monthToInt |> toString |> padLeft 2 '0'
 
-      "B" ->
-        d |> Date.month |> monthToFullName
+            "B" ->
+                d |> Date.month |> monthToFullName
 
-      "b" ->
-        d |> Date.month |> toString
+            "b" ->
+                d |> Date.month |> toString
 
-      "d" ->
-        d |> Date.day |> padWith '0'
+            "d" ->
+                d |> Date.day |> padWith '0'
 
-      "e" ->
-        d |> Date.day |> padWith ' '
+            "e" ->
+                d |> Date.day |> padWith ' '
 
-      "a" ->
-        d |> Date.dayOfWeek |> toString
+            "a" ->
+                d |> Date.dayOfWeek |> toString
 
-      "A" ->
-        d |> Date.dayOfWeek |> fullDayOfWeek
+            "A" ->
+                d |> Date.dayOfWeek |> fullDayOfWeek
 
-      "H" ->
-        d |> Date.hour |> padWith '0'
+            "H" ->
+                d |> Date.hour |> padWith '0'
 
-      "k" ->
-        d |> Date.hour |> padWith ' '
+            "k" ->
+                d |> Date.hour |> padWith ' '
 
-      "I" ->
-        d |> Date.hour |> mod12 |> zero2twelve |> padWith '0'
+            "I" ->
+                d |> Date.hour |> mod12 |> zero2twelve |> padWith '0'
 
-      "l" ->
-        d |> Date.hour |> mod12 |> zero2twelve |> padWith ' '
+            "l" ->
+                d |> Date.hour |> mod12 |> zero2twelve |> padWith ' '
 
-      "p" ->
-        if Date.hour d < 13 then
-          "AM"
-        else
-          "PM"
+            "p" ->
+                if Date.hour d < 13 then
+                    "AM"
+                else
+                    "PM"
 
-      "P" ->
-        if Date.hour d < 13 then
-          "am"
-        else
-          "pm"
+            "P" ->
+                if Date.hour d < 13 then
+                    "am"
+                else
+                    "pm"
 
-      "M" ->
-        d |> Date.minute |> padWith '0'
+            "M" ->
+                d |> Date.minute |> padWith '0'
 
-      "S" ->
-        d |> Date.second |> padWith '0'
+            "S" ->
+                d |> Date.second |> padWith '0'
 
-      _ ->
-        ""
+            _ ->
+                ""
 
 
 monthToInt m =
-  case m of
-    Date.Jan ->
-      1
+    case m of
+        Date.Jan ->
+            1
 
-    Date.Feb ->
-      2
+        Date.Feb ->
+            2
 
-    Date.Mar ->
-      3
+        Date.Mar ->
+            3
 
-    Date.Apr ->
-      4
+        Date.Apr ->
+            4
 
-    Date.May ->
-      5
+        Date.May ->
+            5
 
-    Date.Jun ->
-      6
+        Date.Jun ->
+            6
 
-    Date.Jul ->
-      7
+        Date.Jul ->
+            7
 
-    Date.Aug ->
-      8
+        Date.Aug ->
+            8
 
-    Date.Sep ->
-      9
+        Date.Sep ->
+            9
 
-    Date.Oct ->
-      10
+        Date.Oct ->
+            10
 
-    Date.Nov ->
-      11
+        Date.Nov ->
+            11
 
-    Date.Dec ->
-      12
+        Date.Dec ->
+            12
 
 
 monthToFullName m =
-  case m of
-    Date.Jan ->
-      "January"
+    case m of
+        Date.Jan ->
+            "January"
 
-    Date.Feb ->
-      "February"
+        Date.Feb ->
+            "February"
 
-    Date.Mar ->
-      "March"
+        Date.Mar ->
+            "March"
 
-    Date.Apr ->
-      "April"
+        Date.Apr ->
+            "April"
 
-    Date.May ->
-      "May"
+        Date.May ->
+            "May"
 
-    Date.Jun ->
-      "June"
+        Date.Jun ->
+            "June"
 
-    Date.Jul ->
-      "July"
+        Date.Jul ->
+            "July"
 
-    Date.Aug ->
-      "August"
+        Date.Aug ->
+            "August"
 
-    Date.Sep ->
-      "September"
+        Date.Sep ->
+            "September"
 
-    Date.Oct ->
-      "October"
+        Date.Oct ->
+            "October"
 
-    Date.Nov ->
-      "November"
+        Date.Nov ->
+            "November"
 
-    Date.Dec ->
-      "December"
+        Date.Dec ->
+            "December"
 
 
 fullDayOfWeek dow =
-  case dow of
-    Date.Mon ->
-      "Monday"
+    case dow of
+        Date.Mon ->
+            "Monday"
 
-    Date.Tue ->
-      "Tuesday"
+        Date.Tue ->
+            "Tuesday"
 
-    Date.Wed ->
-      "Wednesday"
+        Date.Wed ->
+            "Wednesday"
 
-    Date.Thu ->
-      "Thursday"
+        Date.Thu ->
+            "Thursday"
 
-    Date.Fri ->
-      "Friday"
+        Date.Fri ->
+            "Friday"
 
-    Date.Sat ->
-      "Saturday"
+        Date.Sat ->
+            "Saturday"
 
-    Date.Sun ->
-      "Sunday"
+        Date.Sun ->
+            "Sunday"
 
 
 mod12 h =
-  h % 12
+    h % 12
 
 
 zero2twelve n =
-  if n == 0 then
-    12
-  else
-    n
+    if n == 0 then
+        12
+    else
+        n
 
 
 padWith : Char -> a -> String
 padWith c =
-  padLeft 2 c << toString
+    padLeft 2 c << toString
