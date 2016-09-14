@@ -87,13 +87,13 @@ formatToken d m =
                 d |> Date.hour |> mod12 |> zero2twelve |> padWith ' '
 
             "p" ->
-                if Date.hour d < 13 then
+                if Date.hour d < 12 then
                     "AM"
                 else
                     "PM"
 
             "P" ->
-                if Date.hour d < 13 then
+                if Date.hour d < 12 then
                     "am"
                 else
                     "pm"
