@@ -7,14 +7,14 @@ module Date.Format exposing (format, formatISO8601)
 
 import Date
 import Regex
-import String exposing (padLeft)
+import String exposing (padLeft, right)
 import Maybe exposing (andThen, withDefault)
 import List exposing (head, tail)
 
 
 re : Regex.Regex
 re =
-    Regex.regex "%(%|Y|m|B|b|d|e|a|A|H|k|I|l|p|P|M|S)"
+    Regex.regex "%(%|Y|y|m|B|b|d|e|a|A|H|k|I|l|p|P|M|S)"
 
 
 {-| Use a format string to format a date. See the
@@ -52,6 +52,9 @@ formatToken d m =
 
             "Y" ->
                 d |> Date.year |> toString
+            
+            "y" ->
+                d |> Date.year |> toString |> right 2
 
             "m" ->
                 d |> Date.month |> monthToInt |> toString |> padLeft 2 '0'
