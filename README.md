@@ -12,6 +12,7 @@ The `Date` refers to Elm's standard [Date library](http://package.elm-lang.org/p
 The input `String` may contain any of the following substrings, which will be expanded to parts of the date.
 
 * `%Y` - 4 digit year
+* `%y` - 2 digit year
 * `%m` - Zero-padded month of year, e.g. `"07"` for July
 * `%B` - Full month name, e.g. `"July"`
 * `%b` - Abbreviated month name, e.g. `"Jul"`
