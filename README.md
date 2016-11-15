@@ -40,4 +40,4 @@ massive case statement, you'll also need to add it to the regex. Languages like
 and [Ruby](http://apidock.com/ruby/DateTime/strftime) have very comprehensive
 format strings. (Luckily, they seem to agree on the encoding, which you should
 follow.) I've tried to add the most common formats, but if you want one added,
-send a PR (and add a passing test). To run the tests, `cd tests && elm package install --yes && elm reactor`.
+send a PR (and add a passing test). To run the tests, `cd tests && elm package install --yes && elm-test Main.elm`.
