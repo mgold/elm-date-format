@@ -1,11 +1,9 @@
-Format String for Elm
-=====================
+# Format String for Elm
 by Max Goldstein
 
 Create format strings for dates in the Elm programming language.
 
-Documentation
--------------
+## Documentation
 
 The module `Date.Format` exports `format : String -> Date.Date -> String`.
 The `Date` refers to Elm's standard [Date library](http://package.elm-lang.org/packages/elm-lang/core/latest/Date).
@@ -30,8 +28,7 @@ The input `String` may contain any of the following substrings, which will be ex
 * `%S` - Second of the minute, zero-padded
 * `%%` - literal `%`
 
-Contributing
-------------
+## Contributing
 
 Pull requests are welcome! Note that in addition to adding a new letter to the
 massive case statement, you'll also need to add it to the regex. Languages like
@@ -40,4 +37,5 @@ massive case statement, you'll also need to add it to the regex. Languages like
 and [Ruby](http://apidock.com/ruby/DateTime/strftime) have very comprehensive
 format strings. (Luckily, they seem to agree on the encoding, which you should
 follow.) I've tried to add the most common formats, but if you want one added,
-send a PR (and add a passing test). To run the tests, `cd tests && elm package install --yes && elm-test Main.elm`.
+send a PR (and add a passing test). To run the tests, `elm test` (after
+installing the [node runner](https://github.com/rtfeldman/node-test-runner)).

@@ -7,9 +7,7 @@ module Tests exposing (all)
 import Date
 import Date.Format
 import String exposing (padLeft, join)
-import Result
 import Expect
-import Debug exposing (log)
 import Test exposing (..)
 
 
@@ -18,8 +16,8 @@ import Test exposing (..)
 
 all : Test
 all =
-    describe "Date Format tests"
-        <| List.map (makeTest << formatTest) testData
+    describe "Date Format tests" <|
+        List.map (makeTest << formatTest) testData
 
 
 type alias TestTriple =
@@ -97,4 +95,4 @@ formatTest ( a, b, format ) =
 
 makeTest : TestTriple -> Test
 makeTest ( described, expected, actual ) =
-    test described <| \() -> Expect.equal (log "actual: " actual) (log "expected: " expected)
+    test described <| \() -> Expect.equal actual expected
