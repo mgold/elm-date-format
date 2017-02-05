@@ -1,16 +1,17 @@
-module Date.Format exposing (format, formatISO8601)
+module Date.Format exposing (format, localFormat, formatISO8601)
 
 {-| Format strings for dates.
 
-@docs format, formatISO8601
+@docs format, localFormat, formatISO8601
 -}
 
 import Date
 import Regex
-import String exposing (padLeft, right)
+import String exposing (padLeft, right, toUpper)
 import Maybe exposing (andThen, withDefault)
 import List exposing (head, tail)
 
+import Date.Local exposing (Local, international)
 
 re : Regex.Regex
 re =
@@ -23,7 +24,16 @@ list of accepted formatters.
 -}
 format : String -> Date.Date -> String
 format s d =
-    Regex.replace Regex.All re (formatToken d) s
+  localFormat international s d
+
+
+{-| Use a localization record and a format string to format a date. See the
+[README](https://github.com/mgold/elm-date-format/blob/master/README.md) for a
+list of accepted formatters.
+-}
+localFormat : Local -> String -> Date.Date -> String
+localFormat loc s d =
+    Regex.replace Regex.All re (formatToken loc d) s
 
 
 {-| Formats a UTC date acording to
@@ -35,8 +45,8 @@ formatISO8601 =
     format "%Y-%m-%dT%H:%M:%SZ"
 
 
-formatToken : Date.Date -> Regex.Match -> String
-formatToken d m =
+formatToken : Local -> Date.Date -> Regex.Match -> String
+formatToken loc d m =
     let
         symbol =
             case m.submatches of
@@ -60,10 +70,10 @@ formatToken d m =
                 d |> Date.month |> monthToInt |> toString |> padLeft 2 '0'
 
             "B" ->
-                d |> Date.month |> monthToFullName
+                d |> Date.month |> monthToWord loc.date.months
 
             "b" ->
-                d |> Date.month |> toString
+                d |> Date.month |> monthToWord loc.date.monthsAbbrev
 
             "d" ->
                 d |> Date.day |> padWith '0'
@@ -72,10 +82,10 @@ formatToken d m =
                 d |> Date.day |> padWith ' '
 
             "a" ->
-                d |> Date.dayOfWeek |> toString
+                d |> Date.dayOfWeek |> dayOfWeekToWord loc.date.wdaysAbbrev
 
             "A" ->
-                d |> Date.dayOfWeek |> fullDayOfWeek
+                d |> Date.dayOfWeek |> dayOfWeekToWord loc.date.wdays
 
             "H" ->
                 d |> Date.hour |> padWith '0'
@@ -91,15 +101,15 @@ formatToken d m =
 
             "p" ->
                 if Date.hour d < 12 then
-                    "AM"
+                    toUpper loc.time.am
                 else
-                    "PM"
+                    toUpper loc.time.pm
 
             "P" ->
                 if Date.hour d < 12 then
-                    "am"
+                    loc.time.am
                 else
-                    "pm"
+                    loc.time.pm
 
             "M" ->
                 d |> Date.minute |> padWith '0'
@@ -150,67 +160,67 @@ monthToInt m =
             12
 
 
-monthToFullName m =
+monthToWord loc m =
     case m of
         Date.Jan ->
-            "January"
+            loc.jan
 
         Date.Feb ->
-            "February"
+            loc.feb
 
         Date.Mar ->
-            "March"
+            loc.mar
 
         Date.Apr ->
-            "April"
+            loc.apr
 
         Date.May ->
-            "May"
+            loc.may
 
         Date.Jun ->
-            "June"
+            loc.jun
 
         Date.Jul ->
-            "July"
+            loc.jul
 
         Date.Aug ->
-            "August"
+            loc.aug
 
         Date.Sep ->
-            "September"
+            loc.sep
 
         Date.Oct ->
-            "October"
+            loc.oct
 
         Date.Nov ->
-            "November"
+            loc.nov
 
         Date.Dec ->
-            "December"
+            loc.dec
 
 
-fullDayOfWeek dow =
+dayOfWeekToWord loc dow =
     case dow of
         Date.Mon ->
-            "Monday"
+            loc.mon
 
         Date.Tue ->
-            "Tuesday"
+            loc.tue
 
         Date.Wed ->
-            "Wednesday"
+            loc.wed
 
         Date.Thu ->
-            "Thursday"
+            loc.thu
 
         Date.Fri ->
-            "Friday"
+            loc.fri
 
         Date.Sat ->
-            "Saturday"
+            loc.sat
 
         Date.Sun ->
-            "Sunday"
+            loc.sun
 
 
 mod12 h =
