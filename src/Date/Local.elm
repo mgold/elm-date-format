@@ -10,8 +10,8 @@ type alias Local =
   { date :
     { months : Months
     , monthsAbbrev : Months
-    , wdays : WDays
-    , wdaysAbbrev : WDays
+    , wdays : WeekDays
+    , wdaysAbbrev : WeekDays
     , defaultFormat : Maybe String
     }
   , time :
@@ -38,7 +38,7 @@ type alias Months =
   , dec : String
   }
 
-type alias WDays =
+type alias WeekDays =
   { mon : String
   , tue : String
   , wed : String
