@@ -1,5 +1,7 @@
 module Date.Local exposing (..)
 
+import Dict exposing (Dict)
+
 {-| Record to store localized time format.
 
 Time zones and default formats are not implemented,
@@ -12,15 +14,15 @@ type alias Local =
     , monthsAbbrev : Months
     , wdays : WeekDays
     , wdaysAbbrev : WeekDays
-    , defaultFormat : Maybe String
+    , defaultFormat : Maybe String -- for %x
     }
   , time :
     { am : String
     , pm : String
-    , defaultFormat : Maybe String
+    , defaultFormat : Maybe String -- for %X
     }
-  , timeZones : Maybe TimeZones
-  , defaultFormat : Maybe String
+  , timeZones : Maybe TimeZones -- for %Z
+  , defaultFormat : Maybe String -- for %c
   }
 
 type alias Months =
@@ -48,7 +50,8 @@ type alias WeekDays =
   , sun : String
   }
 
-type alias TimeZones = Never
+-- Maps from %z type string (+hhmm or -hhmm) to timezone name or abbreviation.
+type alias TimeZones = Dict String String
 
 international : Local
 international =
