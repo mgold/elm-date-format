@@ -28,6 +28,12 @@ The input `String` may contain any of the following substrings, which will be ex
 * `%S` - Second of the minute, zero-padded
 * `%%` - literal `%`
 
+## Localization
+
+`Date.Format` also exports `localFormat : Date.Local.Local -> String -> Date.Date -> String`.
+This function allows to add a localization record as specified in `Date.Local`.
+It can be used to display local terms for week days, months, and AM or PM.
+
 ## Contributing
 
 Pull requests are welcome! Note that in addition to adding a new letter to the
