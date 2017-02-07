@@ -1,14 +1,21 @@
-module Date.Local exposing (..)
+module Date.Local exposing (Local, Months, WeekDays, TimeZones, international)
 
-{-| Record to store localized time format.
+{-| A record type to store localized time formatting information.
 
-Time zones and default formats are not implemented,
-but included to avoid possible version conflicts in the future.
+@docs international
+
+@docs Local, Months, WeekDays, TimeZones
+
 -}
 
 import Dict exposing (Dict)
 
 
+{-| A collection of strings and formats for localizing formats.
+
+Time zones and default formats are not implemented,
+but included to avoid possible version conflicts in the future.
+-}
 type alias Local =
     { date :
         { months : Months
@@ -35,6 +42,8 @@ type alias Local =
     }
 
 
+{-| A record of names for the months of the year.
+-}
 type alias Months =
     { jan : String
     , feb : String
@@ -51,6 +60,8 @@ type alias Months =
     }
 
 
+{-| A record of names for the days of the week.
+-}
 type alias WeekDays =
     { mon : String
     , tue : String
@@ -62,14 +73,16 @@ type alias WeekDays =
     }
 
 
+{-| Maps from %z type string (+hhmm or -hhmm) to timezone name or abbreviation.
 
--- Maps from %z type string (+hhmm or -hhmm) to timezone name or abbreviation.
-
-
+Not currently implemented.
+-}
 type alias TimeZones =
     Dict String String
 
 
+{-| A default set of localizations.
+-}
 international : Local
 international =
     { date =
