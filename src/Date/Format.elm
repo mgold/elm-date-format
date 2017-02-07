@@ -10,8 +10,8 @@ import Regex
 import String exposing (padLeft, right, toUpper)
 import Maybe exposing (andThen, withDefault)
 import List exposing (head, tail)
-
 import Date.Local exposing (Local, international)
+
 
 re : Regex.Regex
 re =
@@ -24,7 +24,7 @@ list of accepted formatters.
 -}
 format : String -> Date.Date -> String
 format s d =
-  localFormat international s d
+    localFormat international s d
 
 
 {-| Use a localization record and a format string to format a date. See the
@@ -62,7 +62,7 @@ formatToken loc d m =
 
             "Y" ->
                 d |> Date.year |> toString
-            
+
             "y" ->
                 d |> Date.year |> toString |> right 2
 
