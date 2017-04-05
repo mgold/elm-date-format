@@ -6,6 +6,8 @@ module Tests exposing (all)
 
 import Date
 import Date.Format
+import Time
+import Time.Format
 import String exposing (padLeft, join)
 import Expect
 import Test exposing (..)
@@ -16,21 +18,34 @@ import Test exposing (..)
 
 all : Test
 all =
-    describe "Date Format tests" <|
-        List.map (makeTest << formatTest) testData
+    describe "Format tests" <|
+        [ describe "Date Format tests" <|
+            List.map (makeTest << formatDateTest) dateTestData
+        , describe "Time Format tests" <|
+            List.map (makeTest << formatTimeTest) timeTestData
+        ]
 
 
 type alias TestTriple =
     ( String, String, String )
 
 
-testData : List TestTriple
-testData =
+dateTestData : List TestTriple
+dateTestData =
     [ ( "numeric date", "12/08/2014", "%d/%m/%Y" )
     , ( "spelled out date", "Tuesday, August 12, 2014", "%A, %B %d, %Y" )
     , ( "time", expectedTime, "%I:%M:%S %p" )
     , ( "time no spaces", expectedTimeNoSpace, "%H%M%S" )
     , ( "literal %", expectedTimeWithLiteral, "%H%%%M" )
+    ]
+
+
+timeTestData : List TestTriple
+timeTestData =
+    [ ( "time no spaces", expectedTimeNoSpace, "%H%M%S" )
+    , ( "literal %", expectedTimeWithLiteral, "%H%%%M" )
+    , ( "time colons", expectedTimeColons, "%H:%M" )
+    , ( "time full colons", expectedFullTimeColons, "%H:%M:%S" )
     ]
 
 
@@ -40,6 +55,14 @@ expectedTimeWithLiteral =
 
 expectedTimeNoSpace =
     join "" [ sampleHour, sampleMinute, sampleMinute ]
+
+
+expectedTimeColons =
+    join ":" [ sampleHour, sampleMinute ]
+
+
+expectedFullTimeColons =
+    join ":" [ sampleHour, sampleMinute, sampleSecond ]
 
 
 expectedTime =
@@ -58,6 +81,11 @@ sampleDate =
     "2014-08-12T04:53:53Z"
         |> Date.fromString
         |> Result.withDefault (Date.fromTime 1.407833631116e12)
+
+
+sampleTime : Time.Time
+sampleTime =
+    Date.toTime sampleDate
 
 
 pad : Int -> String
@@ -88,9 +116,19 @@ formatSampleDate fstring =
     Date.Format.format fstring sampleDate
 
 
-formatTest : TestTriple -> TestTriple
-formatTest ( a, b, format ) =
+formatSampleTime : String -> String
+formatSampleTime fstring =
+    Time.Format.format fstring sampleTime
+
+
+formatDateTest : TestTriple -> TestTriple
+formatDateTest ( a, b, format ) =
     ( a, b, formatSampleDate format )
+
+
+formatTimeTest : TestTriple -> TestTriple
+formatTimeTest ( a, b, format ) =
+    ( a, b, formatSampleTime format )
 
 
 makeTest : TestTriple -> Test

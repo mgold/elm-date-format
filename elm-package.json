@@ -8,7 +8,8 @@
     ],
     "exposed-modules": [
         "Date.Format",
-        "Date.Local"
+        "Date.Local",
+        "Time.Format"
     ],
     "dependencies": {
         "elm-lang/core": "5.0.0 <= v < 6.0.0"
