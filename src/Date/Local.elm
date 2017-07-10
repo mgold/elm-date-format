@@ -1,8 +1,8 @@
-module Date.Local exposing (Local, Months, WeekDays, TimeZones, international)
+module Date.Local exposing (Local, Months, WeekDays, TimeZones, international, french)
 
 {-| A record type to store localized time formatting information.
 
-@docs international
+@docs international, french
 
 @docs Local, Months, WeekDays, TimeZones
 
@@ -131,6 +131,69 @@ international =
             , fri = "Fri"
             , sat = "Sat"
             , sun = "Sun"
+            }
+        , defaultFormat = Nothing
+        }
+    , time =
+        { am = "am"
+        , pm = "pm"
+        , defaultFormat = Nothing
+        }
+    , timeZones = Nothing
+    , defaultFormat = Nothing
+    }
+
+
+{-| French set of localizations.
+-}
+french : Local
+french =
+    { date =
+        { months =
+            { jan = "Janvier"
+            , feb = "Février"
+            , mar = "Mars"
+            , apr = "Avril"
+            , may = "Mai"
+            , jun = "Juin"
+            , jul = "Juillet"
+            , aug = "Août"
+            , sep = "Septembre"
+            , oct = "Octobre"
+            , nov = "Novembre"
+            , dec = "Décembre"
+            }
+        , monthsAbbrev =
+            { jan = "Jan"
+            , feb = "Fév"
+            , mar = "Mar"
+            , apr = "Avr"
+            , may = "Mai"
+            , jun = "Jui"
+            , jul = "Jul"
+            , aug = "Aoû"
+            , sep = "Sep"
+            , oct = "Oct"
+            , nov = "Nov"
+            , dec = "Déc"
+            }
+        , wdays =
+            { mon = "Lundi"
+            , tue = "Mardi"
+            , wed = "Mercredi"
+            , thu = "Jeudi"
+            , fri = "Vendredi"
+            , sat = "Samedi"
+            , sun = "Dimanche"
+            }
+        , wdaysAbbrev =
+            { mon = "Lun"
+            , tue = "Mar"
+            , wed = "Mer"
+            , thu = "Jeu"
+            , fri = "Ven"
+            , sat = "Sam"
+            , sun = "Dim"
             }
         , defaultFormat = Nothing
         }
