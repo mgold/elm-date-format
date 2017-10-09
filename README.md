@@ -43,5 +43,5 @@ massive case statement, you'll also need to add it to the regex. Languages like
 and [Ruby](http://apidock.com/ruby/DateTime/strftime) have very comprehensive
 format strings. (Luckily, they seem to agree on the encoding, which you should
 follow.) I've tried to add the most common formats, but if you want one added,
-send a PR (and add a passing test). To run the tests, `elm test` (after
-installing the [node runner](https://github.com/rtfeldman/node-test-runner)).
+send a PR (and add a passing test). To run the tests, run `elm test` (which you
+can install from the [elm-test](https://github.com/elm-community/elm-test) package).
