@@ -1,21 +1,28 @@
-module Date.Format exposing (format, localFormat, formatISO8601)
+module Date.Format exposing (format, formatISO8601, localFormat)
 
 {-| Format strings for dates.
 
 @docs format, localFormat, formatISO8601
+
 -}
 
 import Date
+import Date.Local exposing (Local, international)
+import List exposing (head, tail)
+import Maybe exposing (andThen, withDefault)
 import Regex
 import String exposing (padLeft, right, toUpper)
-import Maybe exposing (andThen, withDefault)
-import List exposing (head, tail)
-import Date.Local exposing (Local, international)
 
 
 re : Regex.Regex
 re =
-    Regex.regex "%(%|Y|y|m|B|b|d|e|a|A|H|k|I|l|p|P|M|S)"
+    Regex.regex "%(_|-|0)?(%|Y|y|m|B|b|d|e|a|A|H|k|I|l|p|P|M|S)"
+
+
+type Padding
+    = NoPadding
+    | Space
+    | Zero
 
 
 {-| Use a format string to format a date. See the
@@ -48,77 +55,86 @@ formatISO8601 =
 formatToken : Local -> Date.Date -> Regex.Match -> String
 formatToken loc d m =
     let
-        symbol =
+        ( padding, symbol ) =
             case m.submatches of
-                [ Just x ] ->
-                    x
+                [ Just "-", Just x ] ->
+                    ( Just NoPadding, x )
+
+                [ Just "_", Just x ] ->
+                    ( Just Space, x )
+
+                [ Just "0", Just x ] ->
+                    ( Just Zero, x )
+
+                [ Nothing, Just x ] ->
+                    ( Nothing, x )
 
                 _ ->
-                    " "
+                    ( Nothing, " " )
     in
-        case symbol of
-            "%" ->
-                "%"
+    case symbol of
+        "%" ->
+            "%"
 
-            "Y" ->
-                d |> Date.year |> toString
+        "Y" ->
+            d |> Date.year |> toString
 
-            "y" ->
-                d |> Date.year |> toString |> right 2
+        "y" ->
+            d |> Date.year |> toString |> right 2
 
-            "m" ->
-                d |> Date.month |> monthToInt |> toString |> padLeft 2 '0'
+        "m" ->
+            d |> Date.month |> monthToInt |> padWith (withDefault Zero padding)
 
-            "B" ->
-                d |> Date.month |> monthToWord loc.date.months
+        "B" ->
+            d |> Date.month |> monthToWord loc.date.months
 
-            "b" ->
-                d |> Date.month |> monthToWord loc.date.monthsAbbrev
+        "b" ->
+            d |> Date.month |> monthToWord loc.date.monthsAbbrev
 
-            "d" ->
-                d |> Date.day |> padWith '0'
+        "d" ->
+            d |> Date.day |> padWith (withDefault Zero padding)
 
-            "e" ->
-                d |> Date.day |> padWith ' '
+        "e" ->
+            d |> Date.day |> padWith (withDefault Space padding)
 
-            "a" ->
-                d |> Date.dayOfWeek |> dayOfWeekToWord loc.date.wdaysAbbrev
+        "a" ->
+            d |> Date.dayOfWeek |> dayOfWeekToWord loc.date.wdaysAbbrev
 
-            "A" ->
-                d |> Date.dayOfWeek |> dayOfWeekToWord loc.date.wdays
+        "A" ->
+            d |> Date.dayOfWeek |> dayOfWeekToWord loc.date.wdays
 
-            "H" ->
-                d |> Date.hour |> padWith '0'
+        "H" ->
+            d |> Date.hour |> padWith (withDefault Zero padding)
 
-            "k" ->
-                d |> Date.hour |> padWith ' '
+        "k" ->
+            d |> Date.hour |> padWith (withDefault Space padding)
 
-            "I" ->
-                d |> Date.hour |> mod12 |> zero2twelve |> padWith '0'
+        "I" ->
+            d |> Date.hour |> mod12 |> zero2twelve |> padWith (withDefault Zero padding)
 
-            "l" ->
-                d |> Date.hour |> mod12 |> zero2twelve |> padWith ' '
+        "l" ->
+            d |> Date.hour |> mod12 |> zero2twelve |> padWith (withDefault Space padding)
 
-            "p" ->
-                if Date.hour d < 12 then
-                    toUpper loc.time.am
-                else
-                    toUpper loc.time.pm
+        "p" ->
+            if Date.hour d < 12 then
+                toUpper loc.time.am
+            else
+                toUpper loc.time.pm
 
-            "P" ->
-                if Date.hour d < 12 then
-                    loc.time.am
-                else
-                    loc.time.pm
+        "P" ->
+            if Date.hour d < 12 then
+                loc.time.am
+            else
+                loc.time.pm
 
-            "M" ->
-                d |> Date.minute |> padWith '0'
+        "M" ->
+            d |> Date.minute |> padWith (withDefault Zero padding)
 
-            "S" ->
-                d |> Date.second |> padWith '0'
+        "S" ->
+            d |> Date.second |> padWith (withDefault Zero padding)
 
-            _ ->
-                ""
+        _ ->
+            ""
 
 
 monthToInt m =
@@ -234,6 +250,18 @@ zero2twelve n =
         n
 
 
-padWith : Char -> a -> String
-padWith c =
-    padLeft 2 c << toString
+padWith : Padding -> a -> String
+padWith padding =
+    let
+        padder =
+            case padding of
+                NoPadding ->
+                    identity
+
+                Zero ->
+                    padLeft 2 '0'
+
+                Space ->
+                    padLeft 2 ' '
+    in
+    padder << toString

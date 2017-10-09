@@ -7,7 +7,21 @@ Create format strings for dates in the Elm programming language.
 
 The module `Date.Format` exports `format : String -> Date.Date -> String`.
 The `Date` refers to Elm's standard [Date library](http://package.elm-lang.org/packages/elm-lang/core/latest/Date).
-The input `String` may contain any of the following substrings, which will be expanded to parts of the date.
+The input `String` may contain any of the following directives, which will be expanded to parts of the date.
+
+A directive consists of a percent (%) character, zero or more flags and a conversion specifier as follows.
+
+```
+%<flags><conversion>
+```
+
+Flags:
+
+* `-` - don't pad a numerical output
+* `_` - use spaces for padding
+* `0` - use zeros for padding
+
+Format directives:
 
 * `%Y` - 4 digit year
 * `%y` - 2 digit year
