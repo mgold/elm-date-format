@@ -6,11 +6,11 @@ module Tests exposing (all)
 
 import Date
 import Date.Format
+import Expect
+import String exposing (join, padLeft)
+import Test exposing (..)
 import Time
 import Time.Format
-import String exposing (padLeft, join)
-import Expect
-import Test exposing (..)
 
 
 -- test name, expected value, format string
@@ -37,6 +37,7 @@ dateTestData =
     , ( "time", expectedTime, "%I:%M:%S %p" )
     , ( "time no spaces", expectedTimeNoSpace, "%H%M%S" )
     , ( "literal %", expectedTimeWithLiteral, "%H%%%M" )
+    , ( "padding modifiers", "08|8| 8|08", "%m|%-m|%_m|%0m" )
     ]
 
 
@@ -66,7 +67,7 @@ expectedFullTimeColons =
 
 
 expectedTime =
-    (join ":" [ sampleHour, sampleMinute, sampleMinute ])
+    join ":" [ sampleHour, sampleMinute, sampleMinute ]
         ++ (case Date.hour sampleDate < 12 of
                 True ->
                     " AM"
@@ -90,7 +91,7 @@ sampleTime =
 
 pad : Int -> String
 pad =
-    toString >> (padLeft 2 '0')
+    toString >> padLeft 2 '0'
 
 
 sampleHour : String
