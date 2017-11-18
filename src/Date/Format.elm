@@ -16,13 +16,14 @@ import String exposing (padLeft, right, toUpper)
 
 re : Regex.Regex
 re =
-    Regex.regex "%(_|-|0)?(%|Y|y|m|B|b|d|e|a|A|H|k|I|l|p|P|M|S)"
+    Regex.regex "%(_|-|0)?(%|Y|y|m|B|b|d|e|a|A|H|k|I|l|L|p|P|M|S)"
 
 
 type Padding
     = NoPadding
     | Space
     | Zero
+    | ZeroThreeDigits
 
 
 {-| Use a format string to format a date. See the
@@ -132,6 +133,9 @@ formatToken loc d m =
 
         "S" ->
             d |> Date.second |> padWith (withDefault Zero padding)
+
+        "L" ->
+            d |> Date.millisecond |> padWith (withDefault ZeroThreeDigits padding)
 
         _ ->
             ""
@@ -260,6 +264,9 @@ padWith padding =
 
                 Zero ->
                     padLeft 2 '0'
+
+                ZeroThreeDigits ->
+                    padLeft 3 '0'
 
                 Space ->
                     padLeft 2 ' '
