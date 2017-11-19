@@ -47,6 +47,7 @@ timeTestData =
     , ( "literal %", expectedTimeWithLiteral, "%H%%%M" )
     , ( "time colons", expectedTimeColons, "%H:%M" )
     , ( "time full colons", expectedFullTimeColons, "%H:%M:%S" )
+    , ( "time with milliseconds", expectedTimeWithMilliSeconds, "%H:%M:%S:%L" )
     ]
 
 
@@ -66,6 +67,10 @@ expectedFullTimeColons =
     join ":" [ sampleHour, sampleMinute, sampleSecond ]
 
 
+expectedTimeWithMilliSeconds =
+    join ":" [ sampleHour, sampleMinute, sampleSecond, sampleMilliSecond ]
+
+
 expectedTime =
     join ":" [ sampleHour, sampleMinute, sampleMinute ]
         ++ (case Date.hour sampleDate < 12 of
@@ -79,9 +84,7 @@ expectedTime =
 
 sampleDate : Date.Date
 sampleDate =
-    "2014-08-12T04:53:53Z"
-        |> Date.fromString
-        |> Result.withDefault (Date.fromTime 1.407833631116e12)
+    Date.fromTime 1407819233012
 
 
 sampleTime : Time.Time
@@ -89,27 +92,33 @@ sampleTime =
     Date.toTime sampleDate
 
 
-pad : Int -> String
-pad =
-    toString >> padLeft 2 '0'
+pad : Int -> Int -> String
+pad n =
+    toString >> padLeft n '0'
 
 
 sampleHour : String
 sampleHour =
     Date.hour sampleDate
-        |> pad
+        |> pad 2
 
 
 sampleMinute : String
 sampleMinute =
     Date.minute sampleDate
-        |> pad
+        |> pad 2
 
 
 sampleSecond : String
 sampleSecond =
     Date.second sampleDate
-        |> pad
+        |> pad 2
+
+
+sampleMilliSecond : String
+sampleMilliSecond =
+    Date.millisecond sampleDate
+        |> pad 3
 
 
 formatSampleDate : String -> String

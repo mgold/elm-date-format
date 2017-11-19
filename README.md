@@ -40,6 +40,7 @@ Format directives:
 * `%P` - am or pm
 * `%M` - Minute of the hour, zero-padded
 * `%S` - Second of the minute, zero-padded
+* `%L` - Millisecond of the second, zero-padded
 * `%%` - literal `%`
 
 ## Localization
