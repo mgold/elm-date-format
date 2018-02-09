@@ -1,8 +1,8 @@
-module Date.Local exposing (Local, Months, WeekDays, TimeZones, international, french)
+module Date.Local exposing (Local, Months, WeekDays, TimeZones, international, french, brazilian)
 
 {-| A record type to store localized time formatting information.
 
-@docs international, french
+@docs international, french, brazilian
 
 @docs Local, Months, WeekDays, TimeZones
 
@@ -201,6 +201,69 @@ french =
         { am = "am"
         , pm = "pm"
         , defaultFormat = Nothing
+        }
+    , timeZones = Nothing
+    , defaultFormat = Nothing
+    }
+
+
+{-| Brazilian set of localizations.
+-}
+brazilian : Local
+brazilian =
+    { date =
+        { months =
+            { jan = "Janeiro"
+            , feb = "Fevereiro"
+            , mar = "Março"
+            , apr = "Abril"
+            , may = "Maio"
+            , jun = "Junho"
+            , jul = "Julho"
+            , aug = "Agosto"
+            , sep = "Setembro"
+            , oct = "Outubro"
+            , nov = "Novembro"
+            , dec = "Dezembro"
+            }
+        , monthsAbbrev =
+            { jan = "Jan"
+            , feb = "Fev"
+            , mar = "Mar"
+            , apr = "Abr"
+            , may = "Mai"
+            , jun = "Jun"
+            , jul = "Jul"
+            , aug = "Ago"
+            , sep = "Set"
+            , oct = "Out"
+            , nov = "Nov"
+            , dec = "Dez"
+            }
+        , wdays =
+            { mon = "Segunda-feira"
+            , tue = "Terça-feira"
+            , wed = "Quarta-feira"
+            , thu = "Quinta-feira"
+            , fri = "Sexta-feira"
+            , sat = "Sábado"
+            , sun = "Domingo"
+            }
+        , wdaysAbbrev =
+            { mon = "Seg"
+            , tue = "Ter"
+            , wed = "Qua"
+            , thu = "Qui"
+            , fri = "Sex"
+            , sat = "Sáb"
+            , sun = "Dom"
+            }
+        , defaultFormat = Just "%e de %B de %Y"
+        }
+    , time =
+        { am = "am"
+        , pm = "pm"
+        , defaultFormat = Just "%k:%M"
         }
     , timeZones = Nothing
     , defaultFormat = Nothing
