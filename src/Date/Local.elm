@@ -1,8 +1,8 @@
-module Date.Local exposing (Local, Months, WeekDays, TimeZones, international, french, brazilian)
+module Date.Local exposing (Local, Months, WeekDays, TimeZones, international, french, brazilian, greek)
 
 {-| A record type to store localized time formatting information.
 
-@docs international, french, brazilian
+@docs international, french, brazilian, greek
 
 @docs Local, Months, WeekDays, TimeZones
 
@@ -264,6 +264,69 @@ brazilian =
         { am = "am"
         , pm = "pm"
         , defaultFormat = Just "%k:%M"
+        }
+    , timeZones = Nothing
+    , defaultFormat = Nothing
+    }
+
+
+{-| Greek set of localizations.
+-}
+greek : Local
+greek =
+    { date =
+        { months =
+            { jan = "Ιανουαρίου"
+            , feb = "Φεβρουαρίου"
+            , mar = "Μαρτίου"
+            , apr = "Απριλίου"
+            , may = "Μαΐου"
+            , jun = "Ιουνίου"
+            , jul = "Ιουλίου"
+            , aug = "Αυγούστου"
+            , sep = "Σεπτεμβρίου"
+            , oct = "Οκτωβρίου"
+            , nov = "Νοεμβρίου"
+            , dec = "Δεκεμβρίου"
+            }
+        , monthsAbbrev =
+            { jan = "Ιαν"
+            , feb = "Φεβ"
+            , mar = "Μαρ"
+            , apr = "Απρ"
+            , may = "Μαϊ"
+            , jun = "Ιουν"
+            , jul = "Ιουλ"
+            , aug = "Αυγ"
+            , sep = "Σεπ"
+            , oct = "Οκτ"
+            , nov = "Νοε"
+            , dec = "Δεκ"
+            }
+        , wdays =
+            { mon = "Δευτέρα"
+            , tue = "Τρίτη"
+            , wed = "Τετάρτη"
+            , thu = "Πέμπτη"
+            , fri = "Παρασκευή"
+            , sat = "Σάββατο"
+            , sun = "Κυριακή"
+            }
+        , wdaysAbbrev =
+            { mon = "Δευ"
+            , tue = "Τρι"
+            , wed = "Τετ"
+            , thu = "Πεμ"
+            , fri = "Παρ"
+            , sat = "Σαβ"
+            , sun = "Κυρ"
+            }
+        , defaultFormat = Nothing
+        }
+    , time =
+        { am = "πμ"
+        , pm = "μμ"
+        , defaultFormat = Nothing
         }
     , timeZones = Nothing
     , defaultFormat = Nothing
