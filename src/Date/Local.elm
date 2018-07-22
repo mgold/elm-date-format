@@ -389,7 +389,7 @@ dutch =
     , time =
         { am = "am"
         , pm = "pm"
-        , defaultFormat = Nothing
+        , defaultFormat = Just "%H:%M"
         }
     , timeZones = Nothing
     , defaultFormat = Nothing
