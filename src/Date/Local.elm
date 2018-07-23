@@ -1,4 +1,4 @@
-module Date.Local exposing (Local, Months, WeekDays, TimeZones, international, french, brazilian, greek)
+module Date.Local exposing (Local, Months, TimeZones, WeekDays, brazilian, dutch, french, greek, international)
 
 {-| A record type to store localized time formatting information.
 
@@ -327,6 +327,69 @@ greek =
         { am = "πμ"
         , pm = "μμ"
         , defaultFormat = Nothing
+        }
+    , timeZones = Nothing
+    , defaultFormat = Nothing
+    }
+
+
+{-| Dutch set of localizations.
+-}
+dutch : Local
+dutch =
+    { date =
+        { months =
+            { jan = "januari"
+            , feb = "februari"
+            , mar = "maart"
+            , apr = "april"
+            , may = "mei"
+            , jun = "juni"
+            , jul = "juli"
+            , aug = "augustus"
+            , sep = "september"
+            , oct = "oktober"
+            , nov = "november"
+            , dec = "december"
+            }
+        , monthsAbbrev =
+            { jan = "jan"
+            , feb = "feb"
+            , mar = "mrt"
+            , apr = "apr"
+            , may = "mei"
+            , jun = "jun"
+            , jul = "jul"
+            , aug = "aug"
+            , sep = "sep"
+            , oct = "okt"
+            , nov = "nov"
+            , dec = "dec"
+            }
+        , wdays =
+            { mon = "maandag"
+            , tue = "dinsdag"
+            , wed = "woensdag"
+            , thu = "donderdag"
+            , fri = "vrijdag"
+            , sat = "zaterdag"
+            , sun = "zondag"
+            }
+        , wdaysAbbrev =
+            { mon = "ma"
+            , tue = "di"
+            , wed = "wo"
+            , thu = "do"
+            , fri = "vr"
+            , sat = "za"
+            , sun = "zo"
+            }
+        , defaultFormat = Nothing
+        }
+    , time =
+        { am = "am"
+        , pm = "pm"
+        , defaultFormat = Just "%H:%M"
         }
     , timeZones = Nothing
     , defaultFormat = Nothing
