@@ -2,7 +2,7 @@ module Date.Local exposing (Local, Months, TimeZones, WeekDays, brazilian, dutch
 
 {-| A record type to store localized time formatting information.
 
-@docs international, french, brazilian, greek
+@docs international, french, brazilian, greek, dutch
 
 @docs Local, Months, WeekDays, TimeZones
 
@@ -15,6 +15,7 @@ import Dict exposing (Dict)
 
 Time zones and default formats are not implemented,
 but included to avoid possible version conflicts in the future.
+
 -}
 type alias Local =
     { date :
@@ -24,21 +25,25 @@ type alias Local =
         , wdaysAbbrev : WeekDays
         , defaultFormat :
             Maybe String
-            -- for %x
+
+        -- for %x
         }
     , time :
         { am : String
         , pm : String
         , defaultFormat :
             Maybe String
-            -- for %X
+
+        -- for %X
         }
     , timeZones :
         Maybe TimeZones
-        -- for %Z
+
+    -- for %Z
     , defaultFormat :
         Maybe String
-        -- for %c
+
+    -- for %c
     }
 
 
@@ -76,6 +81,7 @@ type alias WeekDays =
 {-| Maps from %z type string (+hhmm or -hhmm) to timezone name or abbreviation.
 
 Not currently implemented.
+
 -}
 type alias TimeZones =
     Dict String String
