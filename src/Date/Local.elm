@@ -276,6 +276,69 @@ brazilian =
     }
 
 
+{-| German set of localizations.
+-}
+german : Local
+german =
+    { date =
+        { months =
+            { jan = "Januar"
+            , feb = "Februar"
+            , mar = "März"
+            , apr = "April"
+            , may = "Mai"
+            , jun = "Juni"
+            , jul = "Juli"
+            , aug = "August"
+            , sep = "September"
+            , oct = "Oktober"
+            , nov = "November"
+            , dec = "Dezember"
+            }
+        , monthsAbbrev =
+            { jan = "Jan"
+            , feb = "Feb"
+            , mar = "Mär"
+            , apr = "Apr"
+            , may = "Mai"
+            , jun = "Jun"
+            , jul = "Jul"
+            , aug = "Aug"
+            , sep = "Sep"
+            , oct = "Okt"
+            , nov = "Nov"
+            , dec = "Dez"
+            }
+        , wdays =
+            { mon = "Montag"
+            , tue = "Dienstag"
+            , wed = "Mittwoch"
+            , thu = "Donnerstag"
+            , fri = "Freitag"
+            , sat = "Samstag"
+            , sun = "Sonntag"
+            }
+        , wdaysAbbrev =
+            { mon = "Mo"
+            , tue = "Di"
+            , wed = "Mi"
+            , thu = "Do"
+            , fri = "Fr"
+            , sat = "Sa"
+            , sun = "So"
+            }
+        , defaultFormat = Just "%e. %B %Y"
+        }
+    , time =
+        { am = "am"
+        , pm = "pm"
+        , defaultFormat = Just "%k:%M"
+        }
+    , timeZones = Nothing
+    , defaultFormat = Nothing
+    }
+
+
 {-| Greek set of localizations.
 -}
 greek : Local
