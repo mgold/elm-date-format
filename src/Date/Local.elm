@@ -1,4 +1,7 @@
-module Date.Local exposing (Local, Months, TimeZones, WeekDays, brazilian, dutch, french, german, greek, international)
+module Date.Local exposing
+    ( international, french, german, brazilian, greek, dutch
+    , Local, Months, WeekDays, TimeZones
+    )
 
 {-| A record type to store localized time formatting information.
 

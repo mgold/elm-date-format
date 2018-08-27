@@ -1,4 +1,4 @@
-module Date.Format exposing (format, formatISO8601, localFormat)
+module Date.Format exposing (format, localFormat, formatISO8601)
 
 {-| Format strings for dates.
 
@@ -6,17 +6,17 @@ module Date.Format exposing (format, formatISO8601, localFormat)
 
 -}
 
-import Date
 import Date.Local exposing (Local, international)
 import List exposing (head, tail)
 import Maybe exposing (andThen, withDefault)
 import Regex
 import String exposing (padLeft, right, toUpper)
+import Time
 
 
-re : Regex.Regex
+re : Maybe Regex.Regex
 re =
-    Regex.regex "%(_|-|0)?(%|Y|y|m|B|b|d|e|a|A|H|k|I|l|L|p|P|M|S)"
+    Regex.fromString "%(_|-|0)?(%|Y|y|m|B|b|d|e|a|A|H|k|I|l|L|p|P|M|S)"
 
 
 type Padding
@@ -30,7 +30,7 @@ type Padding
 [README](https://github.com/mgold/elm-date-format/blob/master/README.md) for a
 list of accepted formatters.
 -}
-format : String -> Date.Date -> String
+format : String -> Time.Posix -> String
 format s d =
     localFormat international s d
 
@@ -39,21 +39,26 @@ format s d =
 [README](https://github.com/mgold/elm-date-format/blob/master/README.md) for a
 list of accepted formatters.
 -}
-localFormat : Local -> String -> Date.Date -> String
+localFormat : Local -> String -> Time.Posix -> String
 localFormat loc s d =
-    Regex.replace Regex.All re (formatToken loc d) s
+    case re of
+        Just goodRe ->
+            Regex.replace goodRe (formatToken loc d) s
+
+        Nothing ->
+            s
 
 
 {-| Formats a UTC date acording to
 [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601). This is commonly used to
 send dates to a server. For example: `2016-01-06T09:22:00Z`.
 -}
-formatISO8601 : Date.Date -> String
+formatISO8601 : Time.Posix -> String
 formatISO8601 =
     format "%Y-%m-%dT%H:%M:%SZ"
 
 
-formatToken : Local -> Date.Date -> Regex.Match -> String
+formatToken : Local -> Time.Posix -> Regex.Match -> String
 formatToken loc d m =
     let
         ( padding, symbol ) =
@@ -78,64 +83,66 @@ formatToken loc d m =
             "%"
 
         "Y" ->
-            d |> Date.year |> toString
+            d |> Time.toYear Time.utc |> String.fromInt
 
         "y" ->
-            d |> Date.year |> toString |> right 2
+            d |> Time.toYear Time.utc |> String.fromInt |> right 2
 
         "m" ->
-            d |> Date.month |> monthToInt |> padWith (withDefault Zero padding)
+            d |> Time.toMonth Time.utc |> monthToInt |> String.fromInt |> padWith (withDefault Zero padding)
 
         "B" ->
-            d |> Date.month |> monthToWord loc.date.months
+            d |> Time.toMonth Time.utc |> monthToWord loc.date.months
 
         "b" ->
-            d |> Date.month |> monthToWord loc.date.monthsAbbrev
+            d |> Time.toMonth Time.utc |> monthToWord loc.date.monthsAbbrev
 
         "d" ->
-            d |> Date.day |> padWith (withDefault Zero padding)
+            d |> Time.toDay Time.utc |> String.fromInt |> padWith (withDefault Zero padding)
 
         "e" ->
-            d |> Date.day |> padWith (withDefault Space padding)
+            d |> Time.toDay Time.utc |> String.fromInt |> padWith (withDefault Space padding)
 
         "a" ->
-            d |> Date.dayOfWeek |> dayOfWeekToWord loc.date.wdaysAbbrev
+            d |> Time.toWeekday Time.utc |> dayOfWeekToWord loc.date.wdaysAbbrev
 
         "A" ->
-            d |> Date.dayOfWeek |> dayOfWeekToWord loc.date.wdays
+            d |> Time.toWeekday Time.utc |> dayOfWeekToWord loc.date.wdays
 
         "H" ->
-            d |> Date.hour |> padWith (withDefault Zero padding)
+            d |> Time.toHour Time.utc |> String.fromInt |> padWith (withDefault Zero padding)
 
         "k" ->
-            d |> Date.hour |> padWith (withDefault Space padding)
+            d |> Time.toHour Time.utc |> String.fromInt |> padWith (withDefault Space padding)
 
         "I" ->
-            d |> Date.hour |> mod12 |> zero2twelve |> padWith (withDefault Zero padding)
+            d |> Time.toHour Time.utc |> mod12 |> zero2twelve |> String.fromInt |> padWith (withDefault Zero padding)
 
         "l" ->
-            d |> Date.hour |> mod12 |> zero2twelve |> padWith (withDefault Space padding)
+            d |> Time.toHour Time.utc |> mod12 |> zero2twelve |> String.fromInt |> padWith (withDefault Space padding)
 
         "p" ->
-            if Date.hour d < 12 then
+            if Time.toHour Time.utc d < 12 then
                 toUpper loc.time.am
+
             else
                 toUpper loc.time.pm
 
         "P" ->
-            if Date.hour d < 12 then
+            if Time.toHour Time.utc d < 12 then
                 loc.time.am
+
             else
                 loc.time.pm
 
         "M" ->
-            d |> Date.minute |> padWith (withDefault Zero padding)
+            d |> Time.toMinute Time.utc |> String.fromInt |> padWith (withDefault Zero padding)
 
         "S" ->
-            d |> Date.second |> padWith (withDefault Zero padding)
+            d |> Time.toSecond Time.utc |> String.fromInt |> padWith (withDefault Zero padding)
 
         "L" ->
-            d |> Date.millisecond |> padWith (withDefault ZeroThreeDigits padding)
+            d |> Time.toMillis Time.utc |> String.fromInt |> padWith (withDefault ZeroThreeDigits padding)
 
         _ ->
             ""
@@ -143,118 +150,119 @@ formatToken loc d m =
 
 monthToInt m =
     case m of
-        Date.Jan ->
+        Time.Jan ->
             1
 
-        Date.Feb ->
+        Time.Feb ->
             2
 
-        Date.Mar ->
+        Time.Mar ->
             3
 
-        Date.Apr ->
+        Time.Apr ->
             4
 
-        Date.May ->
+        Time.May ->
             5
 
-        Date.Jun ->
+        Time.Jun ->
             6
 
-        Date.Jul ->
+        Time.Jul ->
             7
 
-        Date.Aug ->
+        Time.Aug ->
             8
 
-        Date.Sep ->
+        Time.Sep ->
             9
 
-        Date.Oct ->
+        Time.Oct ->
             10
 
-        Date.Nov ->
+        Time.Nov ->
             11
 
-        Date.Dec ->
+        Time.Dec ->
             12
 
 
 monthToWord loc m =
     case m of
-        Date.Jan ->
+        Time.Jan ->
             loc.jan
 
-        Date.Feb ->
+        Time.Feb ->
             loc.feb
 
-        Date.Mar ->
+        Time.Mar ->
             loc.mar
 
-        Date.Apr ->
+        Time.Apr ->
             loc.apr
 
-        Date.May ->
+        Time.May ->
             loc.may
 
-        Date.Jun ->
+        Time.Jun ->
             loc.jun
 
-        Date.Jul ->
+        Time.Jul ->
             loc.jul
 
-        Date.Aug ->
+        Time.Aug ->
             loc.aug
 
-        Date.Sep ->
+        Time.Sep ->
             loc.sep
 
-        Date.Oct ->
+        Time.Oct ->
             loc.oct
 
-        Date.Nov ->
+        Time.Nov ->
             loc.nov
 
-        Date.Dec ->
+        Time.Dec ->
             loc.dec
 
 
 dayOfWeekToWord loc dow =
     case dow of
-        Date.Mon ->
+        Time.Mon ->
             loc.mon
 
-        Date.Tue ->
+        Time.Tue ->
             loc.tue
 
-        Date.Wed ->
+        Time.Wed ->
             loc.wed
 
-        Date.Thu ->
+        Time.Thu ->
             loc.thu
 
-        Date.Fri ->
+        Time.Fri ->
             loc.fri
 
-        Date.Sat ->
+        Time.Sat ->
             loc.sat
 
-        Date.Sun ->
+        Time.Sun ->
             loc.sun
 
 
 mod12 h =
-    h % 12
+    modBy 12 h
 
 
 zero2twelve n =
     if n == 0 then
         12
+
     else
         n
 
 
-padWith : Padding -> a -> String
+padWith : Padding -> String -> String
 padWith padding =
     let
         padder =
@@ -271,4 +279,4 @@ padWith padding =
                 Space ->
                     padLeft 2 ' '
     in
-    padder << toString
+    padder
