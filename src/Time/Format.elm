@@ -3,11 +3,12 @@ module Time.Format exposing (format)
 {-| Format strings for times.
 
 @docs format
+
 -}
 
-import Time
-import Date.Format
 import Date
+import Date.Format
+import Time
 
 
 {-| Use a format string to format a time. See the
