@@ -1,3 +1,6 @@
+# Not Updated For 0.19
+**Use [ryannhg/date-format](https://package.elm-lang.org/packages/ryannhg/date-format/latest/) instead.**
+
 # Format String for Elm
 by Max Goldstein
 
